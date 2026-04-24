@@ -30,7 +30,7 @@ banner() {
 pass() {
     local label="$1"
     echo -e "${C_GREEN}PASS${C_RESET}  $label"
-    PASS_COUNT=$((PASS_COUNT + 1))
+    pass_count=$((pass_count + 1))
 }
 
 fail() {
@@ -38,7 +38,7 @@ fail() {
     local reason="$2"
     echo -e "${C_RED}FAIL${C_RESET}  $label"
     echo "      $reason"
-    FAIL_COUNT=$((FAIL_COUNT + 1))
+    fail_count=$((fail_count + 1))
 }
 
 celebrate() {
@@ -74,8 +74,8 @@ fi
 # Checks
 # ─────────────────────────────────────────────────────────────────────────────
 
-PASS_COUNT=0
-FAIL_COUNT=0
+pass_count=0
+fail_count=0
 
 check_hello() {
     local label="hello.c — compiles and prints a greeting"
@@ -139,6 +139,12 @@ check_calculator() {
         echo "      5 / 0: expected an error message, got: $result"
         errors=$((errors + 1))
     fi
+    # unknown operator
+    result=$(printf '3 ^ 4\n' | ./_calculator 2>/dev/null)
+    if ! echo "$result" | grep -qi 'unknown\|error'; then
+        echo "      3 ^ 4: expected an error message for unknown operator, got: $result"
+        errors=$((errors + 1))
+    fi
     rm -f _calculator
     if [[ "$errors" -eq 0 ]]; then
         pass "$label"
@@ -181,8 +187,8 @@ check_words() {
     fi
     # empty input, 0 words, 0 characters
     result=$(echo "" | ./_words 2>/dev/null)
-    if ! echo "$result" | grep -q '0'; then
-        echo "      empty input: expected output to contain '0', got: $result"
+    if ! echo "$result" | grep -qE '^0 word'; then
+        echo "      empty input: expected output to start with '0 word', got: $result"
         errors=$((errors + 1))
     fi
     rm -f _words
@@ -230,7 +236,7 @@ Copy this script into your f04-practice directory and run it from there:
 
   1. hello.c compiles with -Wall -Wextra and prints a greeting.
   2. calculator.c compiles and produces correct output for +, -, *, /,
-     and division by zero.
+     division by zero, and an unknown operator.
   3. words.c compiles and correctly counts words for several inputs.
   4. guess.c compiles cleanly. The game is interactive — the tester cannot
      play it. Run ./guess yourself to verify it works.
@@ -255,10 +261,10 @@ check_guess
 
 echo ""
 hr
-TOTAL=$((PASS_COUNT + FAIL_COUNT))
-echo "  $PASS_COUNT / $TOTAL checks passed"
+TOTAL=$((pass_count + fail_count))
+echo "  $pass_count / $TOTAL checks passed"
 
-if [[ "$FAIL_COUNT" -eq 0 ]]; then
+if [[ "$fail_count" -eq 0 ]]; then
     celebrate
     exit 0
 else
