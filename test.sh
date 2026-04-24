@@ -159,19 +159,27 @@ check_words() {
     fi
     local errors=0
     local result
-    # three words
+    # three words, 15 characters
     result=$(echo "hello world foo" | ./_words 2>/dev/null)
     if ! echo "$result" | grep -q '3'; then
-        echo "      'hello world foo': expected output to contain '3', got: $result"
+        echo "      'hello world foo': expected output to contain '3' (word count), got: $result"
         errors=$((errors + 1))
     fi
-    # one word
+    if ! echo "$result" | grep -q '15'; then
+        echo "      'hello world foo': expected output to contain '15' (char count), got: $result"
+        errors=$((errors + 1))
+    fi
+    # one word, 3 characters
     result=$(echo "one" | ./_words 2>/dev/null)
     if ! echo "$result" | grep -q '1'; then
-        echo "      'one': expected output to contain '1', got: $result"
+        echo "      'one': expected output to contain '1' (word count), got: $result"
         errors=$((errors + 1))
     fi
-    # empty input
+    if ! echo "$result" | grep -q '3'; then
+        echo "      'one': expected output to contain '3' (char count), got: $result"
+        errors=$((errors + 1))
+    fi
+    # empty input, 0 words, 0 characters
     result=$(echo "" | ./_words 2>/dev/null)
     if ! echo "$result" | grep -q '0'; then
         echo "      empty input: expected output to contain '0', got: $result"
