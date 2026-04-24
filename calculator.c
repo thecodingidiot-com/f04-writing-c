@@ -41,7 +41,9 @@ int main(void)
         }
         printf("%d %c %d = %d\n", a, op, b, divide(a, b));
     }
-    else
+    else {
         printf("Error: unknown operator '%c'\n", op);
+        return (1);
+    }
     return (0);
 }
