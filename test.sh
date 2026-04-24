@@ -122,9 +122,9 @@ check_calculator() {
         errors=$((errors + 1))
     fi
     # multiplication
-    result=$(printf '6 * 7\n' | ./_calculator 2>/dev/null)
-    if ! echo "$result" | grep -q '42'; then
-        echo "      6 * 7: expected output to contain '42', got: $result"
+    result=$(printf '3 * 8\n' | ./_calculator 2>/dev/null)
+    if ! echo "$result" | grep -q '24'; then
+        echo "      3 * 8: expected output to contain '24', got: $result"
         errors=$((errors + 1))
     fi
     # division
