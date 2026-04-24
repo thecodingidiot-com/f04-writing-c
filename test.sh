@@ -93,7 +93,7 @@ check_hello() {
     if echo "$output" | grep -q 'hello'; then
         pass "$label"
     else
-        fail "$label" "output did not contain 'hello' (got: $(./hello 2>/dev/null | head -1))"
+        fail "$label" "output did not contain 'hello' (got: $output)"
     fi
 }
 
@@ -119,6 +119,12 @@ check_calculator() {
     result=$(printf '10 - 3\n' | ./_calculator 2>/dev/null)
     if ! echo "$result" | grep -q '7'; then
         echo "      10 - 3: expected output to contain '7', got: $result"
+        errors=$((errors + 1))
+    fi
+    # multiplication
+    result=$(printf '6 * 7\n' | ./_calculator 2>/dev/null)
+    if ! echo "$result" | grep -q '42'; then
+        echo "      6 * 7: expected output to contain '42', got: $result"
         errors=$((errors + 1))
     fi
     # division
@@ -215,8 +221,8 @@ Copy this script into your f04-practice directory and run it from there:
 ── What the tester checks ───────────────────────────────────────────────────
 
   1. hello.c compiles with -Wall -Wextra and prints a greeting.
-  2. calculator.c compiles and produces correct output for +, -, /, and
-     division by zero.
+  2. calculator.c compiles and produces correct output for +, -, *, /,
+     and division by zero.
   3. words.c compiles and correctly counts words for several inputs.
   4. guess.c compiles cleanly. The game is interactive — the tester cannot
      play it. Run ./guess yourself to verify it works.
