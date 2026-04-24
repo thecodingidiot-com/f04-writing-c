@@ -17,11 +17,6 @@ int multiply(int a, int b)
 
 int divide(int a, int b)
 {
-    if (b == 0)
-    {
-        printf("Error: division by zero\n");
-        return (0);
-    }
     return (a / b);
 }
 
@@ -39,8 +34,13 @@ int main(void)
         printf("%d %c %d = %d\n", a, op, b, subtract(a, b));
     else if (op == '*')
         printf("%d %c %d = %d\n", a, op, b, multiply(a, b));
-    else if (op == '/')
+    else if (op == '/') {
+        if (b == 0) {
+            printf("Error: division by zero\n");
+            return (1);
+        }
         printf("%d %c %d = %d\n", a, op, b, divide(a, b));
+    }
     else
         printf("Error: unknown operator '%c'\n", op);
     return (0);

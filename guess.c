@@ -12,8 +12,7 @@ int main(void)
     target = rand() % 100 + 1;
     attempts = 0;
     printf("I'm thinking of a number between 1 and 100.\n");
-    while (1)
-    {
+    while (1) {
         printf("Your guess: ");
         if (scanf("%d", &guess) != 1)
             break;
@@ -22,8 +21,7 @@ int main(void)
             printf("Too low.\n");
         else if (guess > target)
             printf("Too high.\n");
-        else
-        {
+        else {
             printf("Correct — %d attempt", attempts);
             if (attempts != 1)
                 printf("s");

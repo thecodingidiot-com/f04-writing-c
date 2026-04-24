@@ -11,8 +11,7 @@ int main(void)
     size_t i;
     size_t len;
 
-    if (fgets(line, sizeof(line), stdin) == NULL)
-    {
+    if (fgets(line, sizeof(line), stdin) == NULL) {
         printf("0 words, 0 characters\n");
         return (0);
     }
@@ -21,15 +20,12 @@ int main(void)
     in_word = 0;
     len = strlen(line);
     i = 0;
-    while (i < len)
-    {
+    while (i < len) {
         if (line[i] == '\n')
             break;
         chars++;
-        if (!isspace((unsigned char)line[i]))
-        {
-            if (!in_word)
-            {
+        if (!isspace((unsigned char)line[i])) {
+            if (!in_word) {
                 words++;
                 in_word = 1;
             }
@@ -38,6 +34,7 @@ int main(void)
             in_word = 0;
         i++;
     }
-    printf("%d words, %d characters\n", words, chars);
+    printf("%d %s, %d %s\n", words, words == 1 ? "word" : "words",
+        chars, chars == 1 ? "character" : "characters");
     return (0);
 }
